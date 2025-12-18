@@ -1,142 +1,174 @@
-AWS Infrastructure Automation with Terraform
-Overview
+<h1 align="center">🚀 AWS Infrastructure Automation with Terraform</h1>
 
-This project demonstrates the design, provisioning, and debugging of a production-style AWS infrastructure using Terraform (Infrastructure as Code).
-The focus is on automation, reproducibility, and real-world DevOps problem-solving, not just resource creation.
+<p align="center">
+  <img src="https://img.shields.io/badge/AWS-Cloud-orange?style=for-the-badge&logo=amazonaws" />
+  <img src="https://img.shields.io/badge/Terraform-IaC-purple?style=for-the-badge&logo=terraform" />
+  <img src="https://img.shields.io/badge/DevOps-Automation-blue?style=for-the-badge" />
+</p>
 
-The infrastructure provisions networking, security, compute resources, and automated server bootstrapping on AWS, following DevOps best practices.
+<p align="center">
+  <b>Production-style AWS infrastructure built using Infrastructure as Code (Terraform)</b>
+</p>
 
-🧱 Architecture
+<hr/>
 
-Core components:
+<h2>📌 Project Overview</h2>
 
-VPC with custom CIDR
+<p>
+This project demonstrates the <b>design, provisioning, automation, and debugging</b> of a
+<b>production-style AWS infrastructure</b> using <b>Terraform</b>.
+</p>
 
-Public Subnet
+<p>
+The focus is not just on creating resources, but on applying
+<b>real-world DevOps practices</b> such as reproducibility, automation,
+and safe infrastructure lifecycle management.
+</p>
 
-Internet Gateway & Route Table
+<hr/>
 
-Security Group with controlled ingress/egress
+<h2>🧱 Architecture</h2>
 
-EC2 Instance (Ubuntu) provisioned via Terraform
+<ul>
+  <li><b>VPC</b> with custom CIDR block</li>
+  <li><b>Public Subnet</b></li>
+  <li><b>Internet Gateway & Route Table</b></li>
+  <li><b>Security Group</b> with controlled ingress/egress</li>
+  <li><b>EC2 Instance (Ubuntu 22.04)</b></li>
+  <li><b>Nginx</b> installed automatically using <code>user_data</code></li>
+</ul>
 
-Automated Nginx installation using user_data
+<p><b>Traffic Flow:</b></p>
 
-Internet → Internet Gateway → Route Table → Public Subnet → EC2 → Nginx
+<pre>
+Internet → Internet Gateway → Route Table
+        → Public Subnet → EC2 → Nginx
+</pre>
 
+<hr/>
 
-Tech Stack
+<h2>🛠️ Tech Stack</h2>
 
-Cloud Provider: AWS (ap-south-1)
+<table>
+  <tr><td><b>Cloud Provider</b></td><td>AWS (ap-south-1)</td></tr>
+  <tr><td><b>Infrastructure as Code</b></td><td>Terraform</td></tr>
+  <tr><td><b>Compute</b></td><td>EC2 (Ubuntu 22.04)</td></tr>
+  <tr><td><b>Networking</b></td><td>VPC, Subnet, IGW, Route Table</td></tr>
+  <tr><td><b>Security</b></td><td>Security Groups</td></tr>
+  <tr><td><b>Web Server</b></td><td>Nginx</td></tr>
+</table>
 
-Infrastructure as Code: Terraform
+<hr/>
 
-Compute: EC2 (Ubuntu 22.04)
+<h2>📁 Repository Structure</h2>
 
-Networking: VPC, Subnets, IGW, Route Tables
-
-Security: Security Groups
-
-Web Server: Nginx
-
-OS Automation: cloud-init (user_data)
-
-
-📁 Project Structure
-cloud-infra-terraform/
-├── provider.tf        # AWS provider & version locking
-├── variables.tf       # Input variables
-├── vpc.tf             # VPC & subnet definition
-├── network.tf         # Internet Gateway & routing
-├── security.tf        # Security group rules
-├── ec2.tf             # EC2 instance + user_data
-├── outputs.tf         # Useful outputs
+<pre>
+aws-terraform-infra/
+├── provider.tf
+├── variables.tf
+├── vpc.tf
+├── network.tf
+├── security.tf
+├── ec2.tf
+├── outputs.tf
 └── README.md
+</pre>
 
-⚙️ Key Features
+<hr/>
 
-Infrastructure fully provisioned using Terraform
+<h2>⚙️ Key Highlights</h2>
 
-Clear separation of networking, security, and compute
+<ul>
+  <li>Fully automated AWS infrastructure using Terraform</li>
+  <li>Clean separation of networking, security, and compute</li>
+  <li>Immutable infrastructure approach (destroy & recreate)</li>
+  <li>OS-aware automation for Ubuntu EC2 instances</li>
+  <li>Reproducible, auditable Infrastructure as Code</li>
+</ul>
 
-Immutable infrastructure approach (destroy & recreate instead of manual fixes)
+<hr/>
 
-Automated server bootstrapping (Nginx installs on launch)
+<h2>🚀 Deployment</h2>
 
-Designed to be repeatable and environment-agnostic
+<p><b>Prerequisites:</b></p>
+<ul>
+  <li>AWS account</li>
+  <li>IAM user with programmatic access</li>
+  <li>AWS CLI configured</li>
+  <li>Terraform installed</li>
+</ul>
 
-🚀 How to Deploy
-Prerequisites
+<p><b>Commands:</b></p>
 
-AWS account
-
-IAM user with programmatic access
-
-AWS CLI configured
-
-Terraform installed
-
-
-Steps
+<pre>
 terraform init
 terraform plan
 terraform apply
+</pre>
 
-After deployment:
+<p>
+After deployment, open the EC2 public IP in a browser:
+</p>
 
-Copy the EC2 Public IPv4 address
+<pre>
+http://&lt;public-ip&gt;
+</pre>
 
-Open in browser:
-http://<public-ip>
+<p>
+You should see the <b>Nginx Welcome Page</b>.
+</p>
 
-🧹 Cleanup (Important)
+<hr/>
 
-To avoid unnecessary AWS charges:
+<h2>🧹 Cleanup</h2>
 
+<pre>
 terraform destroy
+</pre>
 
-🧠 Real-World Challenges Solved
+<p>
+<b>Note:</b> Infrastructure is intentionally destroyed after validation
+to avoid unnecessary AWS charges. It can be recreated at any time using Terraform.
+</p>
 
-This project intentionally highlights real DevOps debugging scenarios, including:
+<hr/>
 
-SSH key lifecycle and key rotation
+<h2>🧠 Real-World Problems Solved</h2>
 
-AMI vs OS differences (Amazon Linux vs Ubuntu)
+<ul>
+  <li>SSH key lifecycle and rotation issues</li>
+  <li>AMI vs OS differences (Ubuntu vs Amazon Linux)</li>
+  <li>Correct SSH usernames per OS</li>
+  <li>OS-specific <code>user_data</code> bootstrapping</li>
+  <li>Terraform state awareness</li>
+  <li>Safe destroy & recreate strategy</li>
+</ul>
 
-Correct SSH usernames per OS
+<hr/>
 
-OS-specific user_data bootstrapping
+<h2>🔮 Future Enhancements</h2>
 
-Terraform state awareness and safe resource recreation
+<ul>
+  <li>Remote Terraform state (S3 + DynamoDB)</li>
+  <li>Application Load Balancer</li>
+  <li>Auto Scaling Groups</li>
+  <li>GitHub Actions (CI/CD)</li>
+  <li>Multi-environment setup</li>
+  <li>Kubernetes integration</li>
+</ul>
 
-PowerShell vs Linux SSH behavior differences
+<hr/>
 
-These challenges mirror actual production incidents, not lab exercises.
+<h2>👤 Author</h2>
 
-📌 Why Infrastructure as Code?
+<p>
+<b>Vishal Soni</b><br/>
+Aspiring DevOps / Cloud Engineer<br/>
+Focused on cloud infrastructure, automation, and real-world problem solving
+</p>
 
-Consistency: Same infra every time
+<hr/>
 
-Version control: Infra changes are auditable
-
-Reproducibility: Environments can be recreated safely
-
-Automation: No manual AWS console dependency
-
-Scalability: Easy extension to ASG, ALB, RDS, etc.
-
-🔮 Future Enhancements
-
-Remote Terraform state (S3 + DynamoDB locking)
-
-Auto Scaling Groups
-
-Application Load Balancer
-
-CI/CD with GitHub Actions
-
-Multi-environment setup (dev/stage/prod)
-
-Kubernetes integration
-
-
+<p align="center">
+⭐ If you found this project useful, consider starring the repository.
+</p>
